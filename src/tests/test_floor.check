@@ -1,0 +1,108 @@
+#test floor_1
+  s21_decimal tmp;
+  s21_decimal num = {{0x00000001, 0x00000000, 0x00000000, 0x80000000}};  // -1
+  s21_decimal result = {{0x00000001, 0x00000000, 0x00000000, 0x80000000}};  // -1
+  int ret = s21_floor(num, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test floor_2
+  s21_decimal tmp;
+  s21_decimal num = {{0xCF5C048C, 0x004D2BEF, 0x00000000, 0x00070000}};  // 2172188218.2812812
+  s21_decimal result = {{0x8178F63A, 0x00000000, 0x00000000, 0x00000000}};  // 2172188218
+  int ret = s21_floor(num, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test floor_3
+  s21_decimal tmp;
+  s21_decimal num = {{0xFEADBDA2, 0x000001FB, 0x00000000, 0x80060000}};  // -2181821.218210
+  s21_decimal result = {{0x00214ABE, 0x00000000, 0x00000000, 0x80000000}};  //-2181822
+  int ret = s21_floor(num, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test floor_4
+  s21_decimal tmp;
+  s21_decimal num = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000}};  // 79228162514264337593543950335
+  s21_decimal result = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000}};  // 79228162514264337593543950335
+  int ret = s21_floor(num, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test floor_5
+  s21_decimal tmp;
+  s21_decimal num = {{0x000F4240, 0x00000000, 0x00000000, 0x80020000}};  // -10000.00
+  s21_decimal result = {{0x00002710, 0x00000000, 0x00000000, 0x80000000}};  //-10000
+  int ret = s21_floor(num, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test floor_6
+  s21_decimal tmp;
+  s21_decimal num = {{0x000F4240, 0x00002710, 0x00002710, 0x80050000}};  // -1844674407800451901.20000
+  s21_decimal result = {{0xB333333E, 0x19999999, 0x00000000, 0x80000000}};  //-1844674407800451902
+  int ret = s21_floor(num, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test floor_7
+  s21_decimal tmp;
+  s21_decimal num = {{0x0000000B, 0x00000000, 0x00000000, 0x00010000}};  // 1.1
+  s21_decimal result = {{0x00000001, 0x00000000, 0x00000000, 0x00000000}};  // 1
+  int ret = s21_floor(num, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test floor_8
+  s21_decimal tmp;
+  s21_decimal num = {{0x075BCD15, 0x00000000, 0x00000000, 0x00120000}};  // 0.000000000123456789
+  s21_decimal result = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}};  // 0
+  int ret = s21_floor(num, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test floor_9
+  s21_decimal tmp;
+  s21_decimal num = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x801C0000}};  // -7.9228162514264337593543950335
+  s21_decimal result = {{0x00000008, 0x00000000, 0x00000000, 0x80000000}};  //-8
+  int ret = s21_floor(num, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);

@@ -1,0 +1,193 @@
+#test sub_1
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}}; // 0
+  s21_decimal num2 = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}}; // 0
+  s21_decimal result = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}}; // 0
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_2
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000019, 0x00000000, 0x00000000, 0x00010000}}; // 2.5
+  s21_decimal num2 = {{0x00000019, 0x00000000, 0x00000000, 0x00010000}}; // 2.5
+  s21_decimal result = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}}; // 0
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_3
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000001, 0x00000000, 0x00000000, 0x800E0000}};  // -0.00000000000001
+  s21_decimal num2 = {{0x00000006, 0x00000000, 0x00000000, 0x000F0000}};  //  0.000000000000006
+  s21_decimal result = {{0x00000010, 0x00000000, 0x00000000, 0x800F0000}};  // -0.000000000000016
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_4
+  s21_decimal tmp;
+  s21_decimal num1 =  {{0x00000019, 0x00000000, 0x00000000, 0x00010000}};  // 2.5
+  s21_decimal num2 = {{0x00000064, 0x00000000, 0x00000000, 0x00000000}};  // 100
+  s21_decimal result = {{0x000003CF, 0x00000000, 0x00000000, 0x80010000}};  // -97.5
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_5
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000183, 0x00000000, 0x00000000, 0x00020000}};  // 3.87
+  s21_decimal num2 = {{0x00004DA6, 0x00000000, 0x00000000, 0x00020000}};  // 198.78
+  s21_decimal result = {{0x00004C23, 0x00000000, 0x00000000, 0x80020000}};  // -194.91
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_6
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x14490831, 0x00048E23, 0x00000000, 0x00070000}};  // 128218122.2172721
+  s21_decimal num2 = {{0x164214B7, 0x00000028, 0x00000000, 0x00040000}};  // 17217212.1271
+  s21_decimal result = {{0x22281D59, 0x0003F18C, 0x00000000, 0x00070000}};  // 111000910.0901721
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_7
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x80000000, 0x80000000, 0x80000000, 0x801C0000}};  // -3.9614081266355540835774234624
+  s21_decimal num2 = {{0x80000000, 0x80000000, 0x80000000, 0x801C0000}}; // -3.9614081266355540835774234624
+  s21_decimal result = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}};  // 0
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_8
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x000F4240, 0x00000000, 0x00000000, 0x001C0000}};  // 0.0000000000000000000001000000
+  s21_decimal num2 = {{0x000186A0, 0x00000000, 0x00000000, 0x00140000}};  // 0.00000000000000100000
+  s21_decimal result = {{0x4E635DC0, 0x00000918, 0x00000000, 0x801C0000}};  // -0.0000000000000009999999000000
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_9
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x80000000, 0x80000000, 0x80000000, 0x00000000}};  // 39614081266355540835774234624
+  s21_decimal num2 = {{0x00000000, 0x00000000, 0x00000000, 0x000A0000}};  // 0.0000000000
+  s21_decimal result = {{0x80000000, 0x80000000, 0x80000000, 0x00000000}};  // 39614081266355540835774234624
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_10
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x1422CF6C, 0x000001FC, 0x00000000, 0x80030000}};  // -2182181212.012
+  s21_decimal num2 = {{0xF96C01C5, 0x0007B6B6, 0x00000000, 0x800B0000}};  // -21712.21821882821
+  s21_decimal result = {{0x3D3DEA3B, 0xD45ACA59, 0x0000000B, 0x800B0000}};  // -2182159499.79378117179
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_11
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x0001869F, 0x00000000, 0x00000000, 0x00050000}};  // 0.99999
+  s21_decimal num2 = {{0x00000001, 0x00000000, 0x00000000, 0x00050000}};  // 0.00001
+  s21_decimal result = {{0x0001869E, 0x00000000, 0x00000000, 0x00050000}};  // 0.99998
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_12
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x0098967E, 0x00000000, 0x00000000, 0x80060000}};  // -9.999998
+  s21_decimal num2 = {{0x00000002, 0x00000000, 0x00000000, 0x80060000}};  // -0.000002
+  s21_decimal result = {{0x0098967C, 0x00000000, 0x00000000, 0x80060000}};  // -9.999996
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_13
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x000000CF, 0x00000000, 0x00000000, 0x00010000}};  // 20.7
+  s21_decimal num2 = {{0x00003F86, 0x00000000, 0x00000000, 0x00160000}};  // 0.0000000000000000016262
+  s21_decimal result = {{0x035FC07A, 0x7E1382FF, 0x00002BD5, 0x00160000}};  // 20.6999999999999999983738
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_14
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000190, 0x00000000, 0x00000000, 0x80000000}};  // -400
+  s21_decimal num2 = {{0x00000190, 0x00000000, 0x00000000, 0x80000000}};  // -400
+  s21_decimal result = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}};  // 0
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_15
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x10C2F579, 0x00000000, 0x00000000, 0x80050000}};  // -2812.12281
+  s21_decimal num2 = {{0x10C44951, 0x00000000, 0x00000000, 0x80030000}};  // -281299.281
+  s21_decimal result = {{0x7BE9AE2B, 0x00000006, 0x00000000, 0x00050000}};  // 278487.15819
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(tmp.bits[0], result.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], result.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], result.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], result.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test sub_16
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000001, 0x00000000, 0x00000000, 0x00000000}};  // 1
+  s21_decimal num2 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80000000}};  //-79228162514264337593543950335
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(ret, 1);
+
+#test sub_17
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000001, 0x00000000, 0x00000000, 0x80000000}};  // -1
+  s21_decimal num2 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000}};  // 79228162514264337593543950335
+  int ret = s21_sub(num1, num2, &tmp);
+  ck_assert_int_eq(ret, 2);

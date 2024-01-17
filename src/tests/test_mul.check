@@ -1,0 +1,367 @@
+#test mul0
+
+  s21_decimal result1 = {{0, 0, 0, 0}};
+  s21_decimal result2 = {{0, 0, 0, 0}};
+  s21_decimal case_full1 = {{123, 321, -2147483648, 0}};
+  s21_decimal case_full2 = {{123, 321, -2147483648, 0}};
+  s21_decimal case_max = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0}};
+  int res_mul = -1;
+  s21_decimal case_d = {{0, 0, 0, 0}};
+  res_mul = s21_mul(case_d, case_max, &result1);
+  ck_assert_int_eq(res_mul, 0);
+  s21_decimal max = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0}};
+  res_mul = s21_mul(max, max, &result1);
+  ck_assert_int_eq(res_mul, 1);
+  int res_ful1 = 0;
+  int res_ful2 = 0;
+  res_ful1 = s21_mul(case_full1, case_full2, &result1);
+  ck_assert_int_eq(res_ful1, 1);
+  res_ful2 = s21_mul(case_full1, case_full2, &result2);
+  setBit(&result2, 127, 1);
+  ck_assert_int_eq(res_ful2, 1);
+
+
+#test mul1
+  s21_decimal decimal_1;
+  s21_decimal decimal_2;
+  s21_decimal result;
+  setDefault(&decimal_1);
+  setDefault(&decimal_2);
+  decimal_1.bits[0] = 1256;
+  decimal_2.bits[0] = 1000;
+
+  s21_decimal true_result;
+  setDefault(&true_result);
+  true_result.bits[0] = 1256000;
+
+  int status = s21_mul(decimal_1, decimal_2, &result);
+  int true_status = 0;
+
+  ck_assert_int_eq(1, s21_is_equal(result, true_result));
+  ck_assert_int_eq(status, true_status);
+
+
+
+#test mul3
+  s21_decimal decimal_1;
+  s21_decimal decimal_2;
+  s21_decimal result;
+  setDefault(&decimal_1);
+  setDefault(&decimal_2);
+
+  decimal_1.bits[2] = 4294967295;
+
+  decimal_2.bits[0] = 2;
+
+  int status = s21_mul(decimal_1, decimal_2, &result);
+  int true_status = 1;
+
+  ck_assert_int_eq(status, true_status);
+
+#test mul4
+  s21_decimal decimal_1;
+  s21_decimal decimal_2;
+  s21_decimal result;
+  setDefault(&decimal_1);
+  setDefault(&decimal_2);
+
+  decimal_1.bits[0] = 4294967295;
+  decimal_1.bits[1] = 4294967295;
+  decimal_1.bits[2] = 2147483647;
+
+  decimal_2.bits[0] = 2;
+
+  s21_decimal true_result;
+  setDefault(&true_result);
+  true_result.bits[0] = 4294967294;
+  true_result.bits[1] = 4294967295;
+  true_result.bits[2] = 4294967295;
+
+  int status = s21_mul(decimal_1, decimal_2, &result);
+  int true_status = 0;
+
+  ck_assert_int_eq(1, s21_is_equal(result, true_result));
+  ck_assert_int_eq(status, true_status);
+
+#test mul_5
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}};  // 0
+  s21_decimal num2 = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}};  // 0
+  s21_decimal result =  {{0x00000000, 0x00000000, 0x00000000, 0x00000000}};  // 0
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_6
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x0000000F, 0x00000000, 0x00000000, 0x00010000}};  // 1.5
+  s21_decimal num2 = {{0x00000002, 0x00000000, 0x00000000, 0x00000000}};  // 2
+  s21_decimal result =  {{0x0000001E, 0x00000000, 0x00000000, 0x00010000}};  // 3.0
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_7
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000001, 0x00000000, 0x00000000, 0x000F0000}};  // 0.000000000000001
+  s21_decimal num2 = {{0x540BE400, 0x00000002, 0x00000000, 0x00000000}};  // 10000000000
+  s21_decimal result =  {{0x540BE400, 0x00000002, 0x00000000, 0x000F0000}};  // 0.000010000000000
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_8
+  s21_decimal tmp;
+  s21_decimal num1 = {{0xC4D5AAEC, 0x00000025, 0x00000000, 0x00060000}};  // 162216.127212
+  s21_decimal num2 = {{0x0000033B, 0x00000000, 0x00000000, 0x00040000}};  // 0.0827
+  s21_decimal result =  {{0xDE3F2864, 0x00007A02, 0x00000000, 0x000A0000}};  // 13415.2737204324
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_9
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x74489B46, 0x11C6B4C4, 0x00000000, 0x00050000}};  // 12809098998909.89894
+  s21_decimal num2 = {{0x0005C187, 0x00000000, 0x00000000, 0x000F0000}};  // 0.000000000377223
+  s21_decimal result =  {{0x17B7A7EA, 0xB5E7B4AF, 0x00006651, 0x00140000}};  // 4831.88675166578880784362
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_10
+  s21_decimal tmp;
+  s21_decimal num1 = {{0xA4C194B9, 0xDF05E1A3, 0x000786BE, 0x00050000}};  // 90987987978798797979.37337
+  s21_decimal num2 = {{0x000003DD, 0x00000000, 0x00000000, 0x00000000}};  // 989
+  s21_decimal result =  {{0x7FDB8EB5, 0x99B8B533, 0x1D138F63, 0x00050000}};  // 89987120111032011201600.26293
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_11
+  s21_decimal tmp;
+  s21_decimal num1 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80000000}};  // -79228162514264337593543950335
+  s21_decimal num2 = {{0x00000001, 0x00000000, 0x00000000, 0x80000000}};  // -1
+  s21_decimal result =  {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000}};  // 79228162514264337593543950335
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_12
+  s21_decimal tmp;
+  s21_decimal num1 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000}};  // 79228162514264337593543950335
+  s21_decimal num2 = {{0x00000005, 0x00000000, 0x00000000, 0x00010000}};  // 0.5
+  s21_decimal result = {{0x00000000, 0x00000000, 0x80000000, 0x00000000}};  // 39614081257132168796771975168
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_13
+  s21_decimal tmp;
+  s21_decimal num1 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000}};  // 79228162514264337593543950335
+  s21_decimal num2 = {{0x00000159, 0x00000000, 0x00000000, 0x00040000}};  // 0.0345
+  s21_decimal result = {{0x851EB852, 0x1EB851EB, 0x5851EB85, 0x00010000}};  // 2733371606742119646977266286.6
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_14
+  s21_decimal tmp;
+  s21_decimal num1 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000}};  // 79228162514264337593543950335
+  s21_decimal num2 = {{0x04000001, 0xC308736A, 0x02E87669, 0x001B0000}};  // 0.900000000000000000000000001
+  s21_decimal result = {{0x666666B5, 0x66666666, 0xE6666666, 0x00000000}};  // 71305346262837903834189555381
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_15
+  s21_decimal tmp;
+  s21_decimal num1 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x000F0000}};  // 79228162514264.337593543950335
+  s21_decimal num2 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x800F0000}};  // -79228162514264.337593543950335
+  s21_decimal result = {{0x096EE456, 0x359A3B3E, 0xCAD2F7F5, 0x80010000}};  // -6277101735386680763835789423.0
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_16
+  s21_decimal tmp;
+  s21_decimal num1 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80180000}};  // -79228.162514264337593543950335
+  s21_decimal num2 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00180000}};  // 79228.162514264337593543950335
+  s21_decimal result = {{0x096EE456, 0x359A3B3E, 0xCAD2F7F5, 0x80130000}};  // -6277101735.3866807638357894230
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_17
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x0098967F, 0x00000000, 0x00000000, 0x00070000}};  // 0.9999999
+  s21_decimal num2 = {{0x0D01C1BA, 0x00000000, 0x00000000, 0x00010000}};  // 21821893.8
+  s21_decimal result = {{0x81D21746, 0x0007C0B0, 0x00000000, 0x00080000}};  // 21821891.61781062
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_18
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x0000036C, 0x00000000, 0x00000000, 0x00110000}};  // 0.00000000000000876
+  s21_decimal num2 = {{0x3E41371C, 0x01632A10, 0x00000000, 0x80040000}};  // -9996986598458.7548
+  s21_decimal result = {{0x072893D0, 0xBF53EF95, 0x00000004, 0x80150000}};  // -0.087573602602498692048
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_19
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x2110991F, 0x1ED3CC02, 0x00000023, 0x000E0000}};
+  s21_decimal num2 = {{0xC092569D, 0x00000C41, 0x00000000, 0x00100000}};
+  s21_decimal result = {{0x92DF46D1, 0x3DDA088A, 0x1C360358, 0x00180000}};
+  int ret = s21_mul(num1, num2, &tmp);
+  char buf1[512];
+  char buf2[512];
+  float tmp_fl;
+  s21_from_decimal_to_float(tmp, &tmp_fl);
+  float result_fl;
+  s21_from_decimal_to_float(result, &result_fl);
+  sprintf(buf1, "%.6E", tmp_fl);
+  sprintf(buf2, "%.6E", result_fl);
+  ck_assert(strcmp(buf1, buf2) == 0);
+  ck_assert_int_eq(ret, 0);
+
+#test mul_20
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000010, 0x00000000, 0x00000000, 0x80010000}};  // -1.6
+  s21_decimal num2 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000}};  // 79228162514264337593543950335
+  int ret = s21_mul(num1, num2, &tmp);
+  ck_assert_int_eq(ret, 2);
+
+#test mul_21
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x00000069, 0x00000000, 0x00000000, 0x00010000}};  // 10.5
+  s21_decimal num2 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000}};  // 79228162514264337593543950335
+  int ret = s21_mul(num1, num2, &tmp);
+  ck_assert_int_eq(ret, 1);
+
+#test mul_22
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x0000000B, 0x00000000, 0x00000000, 0x80010000}};  // -1.1
+  s21_decimal num2 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80000000}};  //-79228162514264337593543950335
+  int ret = s21_mul(num1, num2, &tmp);
+  ck_assert_int_eq(ret, 1);
+
+#test mul_23
+  s21_decimal tmp;
+  s21_decimal num1 = {{0x0000006A, 0x00000000, 0x00000000, 0x00010000}};  // 10.6
+  s21_decimal num2 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80000000}};  //-79228162514264337593543950335
+  int ret = s21_mul(num1, num2, &tmp);
+  ck_assert_int_eq(ret, 2);

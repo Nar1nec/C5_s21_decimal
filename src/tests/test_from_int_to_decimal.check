@@ -1,0 +1,111 @@
+#include "s21_decimal.h"
+
+#test s21_from_int_to_decimal_0
+  int src = 0;
+  s21_decimal dst = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_from_int_to_decimal_1
+  int src = -2;
+  s21_decimal dst = {{0x00000002, 0x00000000, 0x00000000, 0x80000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_from_int_to_decimal_2
+  int src = -3;
+  s21_decimal dst = {{0x00000003, 0x00000000, 0x00000000, 0x80000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_from_int_to_decimal_3
+  int src = 255;
+  s21_decimal dst = {{0x000000FF, 0x00000000, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_from_int_to_decimal_4
+  int src = -32767;
+  s21_decimal dst = {{0x00007FFF, 0x00000000, 0x00000000, 0x80000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_from_int_to_decimal_5
+  int src = -2818281;
+  s21_decimal dst = {{0x002B00E9, 0x00000000, 0x00000000, 0x80000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_from_int_to_decimal_6
+  int src = 9999;
+  s21_decimal dst = {{0x0000270F, 0x00000000, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_from_int_to_decimal_7
+  int src = 782684;
+  s21_decimal dst = {{0x000BF15C, 0x00000000, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_from_int_to_decimal_8
+  int src = 2147483647;
+  s21_decimal dst = {{0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_from_int_to_decimal_9
+  int src = -2147483648;
+  s21_decimal dst = {{0x80000000, 0x00000000, 0x00000000, 0x80000000}};
+  s21_decimal tmp;
+  int ret = s21_from_int_to_decimal(src, &tmp);
+  ck_assert_int_eq(tmp.bits[0], dst.bits[0]);
+  ck_assert_int_eq(tmp.bits[1], dst.bits[1]);
+  ck_assert_int_eq(tmp.bits[2], dst.bits[2]);
+  ck_assert_int_eq(tmp.bits[3], dst.bits[3]);
+  ck_assert_int_eq(ret, 0);

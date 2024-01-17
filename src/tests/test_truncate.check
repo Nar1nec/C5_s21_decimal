@@ -1,0 +1,97 @@
+#test s21_truncate_0
+  s21_decimal value = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}}; // 0
+  s21_decimal result = {{0x00000000, 0x00000000, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_truncate(value, &tmp);
+  ck_assert_int_eq(result.bits[0], tmp.bits[0]);
+  ck_assert_int_eq(result.bits[1], tmp.bits[1]);
+  ck_assert_int_eq(result.bits[2], tmp.bits[2]);
+  ck_assert_int_eq(result.bits[3], tmp.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_truncate_1
+  s21_decimal value = {{0x0000000E, 0x00000000, 0x00000000, 0x00000000}}; // 14
+  s21_decimal result = {{0x0000000E, 0x00000000, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_truncate(value, &tmp);
+  ck_assert_int_eq(result.bits[0], tmp.bits[0]);
+  ck_assert_int_eq(result.bits[1], tmp.bits[1]);
+  ck_assert_int_eq(result.bits[2], tmp.bits[2]);
+  ck_assert_int_eq(result.bits[3], tmp.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_truncate_2
+  s21_decimal value = {{0x00000467, 0x0000007A, 0x00000000, 0x00040000}}; // 52398601.1239
+  s21_decimal result = {{0x031F8A09, 0x00000000, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_truncate(value, &tmp);
+  ck_assert_int_eq(result.bits[0], tmp.bits[0]);
+  ck_assert_int_eq(result.bits[1], tmp.bits[1]);
+  ck_assert_int_eq(result.bits[2], tmp.bits[2]);
+  ck_assert_int_eq(result.bits[3], tmp.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_truncate_3
+  s21_decimal value = {{0x0000000F, 0x00000000, 0x00000000, 0x80010000}}; // -1.5
+  s21_decimal result = {{0x00000001, 0x00000000, 0x00000000, 0x80000000}};
+  s21_decimal tmp;
+  int ret = s21_truncate(value, &tmp);
+  ck_assert_int_eq(result.bits[0], tmp.bits[0]);
+  ck_assert_int_eq(result.bits[1], tmp.bits[1]);
+  ck_assert_int_eq(result.bits[2], tmp.bits[2]);
+  ck_assert_int_eq(result.bits[3], tmp.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_truncate_4
+  s21_decimal value = {{0xFFFFFFFF, 0x00000000, 0x00000000, 0x00060000}}; // 4294.967295
+  s21_decimal result = {{0x000010C6, 0x00000000, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_truncate(value, &tmp);
+  ck_assert_int_eq(result.bits[0], tmp.bits[0]);
+  ck_assert_int_eq(result.bits[1], tmp.bits[1]);
+  ck_assert_int_eq(result.bits[2], tmp.bits[2]);
+  ck_assert_int_eq(result.bits[3], tmp.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_truncate_5
+  s21_decimal value = {{0xFFFFFFFF, 0xFFFFFFFF, 0x00000000,
+      0x80050000}}; // -184467440737095.51615
+  s21_decimal result = {{0xAC471B47, 0x0000A7C5, 0x00000000, 0x80000000}};
+  s21_decimal tmp;
+  int ret = s21_truncate(value, &tmp);
+  ck_assert_int_eq(result.bits[0], tmp.bits[0]);
+  ck_assert_int_eq(result.bits[1], tmp.bits[1]);
+  ck_assert_int_eq(result.bits[2], tmp.bits[2]);
+  ck_assert_int_eq(result.bits[3], tmp.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_truncate_6
+  s21_decimal value = {{0x1FC40A5D, 0xA98FD4BE, 0x00000000,
+      0x00020000}}; // 122182182271212611.49
+  s21_decimal result = {{0x24285C43, 0x01B2140C, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_truncate(value, &tmp);
+  ck_assert_int_eq(result.bits[0], tmp.bits[0]);
+  ck_assert_int_eq(result.bits[1], tmp.bits[1]);
+  ck_assert_int_eq(result.bits[2], tmp.bits[2]);
+  ck_assert_int_eq(result.bits[3], tmp.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_truncate_7
+  s21_decimal value = {{0x1FC40A5F, 0xA98FD4BE, 0x00000000,
+      0x00020000}}; // 122182182271212611.51
+  s21_decimal result = {{0x24285C43, 0x01B2140C, 0x00000000, 0x00000000}};
+  s21_decimal tmp;
+  int ret = s21_truncate(value, &tmp);
+  ck_assert_int_eq(result.bits[0], tmp.bits[0]);
+  ck_assert_int_eq(result.bits[1], tmp.bits[1]);
+  ck_assert_int_eq(result.bits[2], tmp.bits[2]);
+  ck_assert_int_eq(result.bits[3], tmp.bits[3]);
+  ck_assert_int_eq(ret, 0);
+
+#test s21_negate_8
+  s21_decimal value = {{0x1FC40A5D, 0xA98FD4BE, 0x00000000,
+      0x80020000}}; // 122182182271212611.51
+  s21_decimal *tmp = NULL;
+  int ret = s21_negate(value, tmp);
+  ck_assert_int_eq(ret, 1);
